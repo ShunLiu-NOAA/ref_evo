@@ -81,8 +81,8 @@ def find_loc(lon,lat,stalon,stalat):
     print(a)
     locx=a[0]
     locy=a[1]
-    print(lon[ix,iy])
-    print(lat[ix,iy])
+    print(lon[locx,locy])
+    print(lat[locx,locy])
     return locx, locy
     
 def gen_figure(geopath):
@@ -91,17 +91,7 @@ def gen_figure(geopath):
     plotpath ='fv3grid.png'
     plot_world_map(lon, lat, lont, latt, plotpath)
   
-
-def gen_location(geopath):
-    # read the files to get the 2D array to plot
-    lon, lat, lont, latt = read_var(geopath)
-    stalon=285.0
-    stalat=45.0
-    locx=0
-    locy=0
-    locx,locy = find_loc(lon,lat,stalon,stalat)
-
-def readfield(corefilepath,tracerfilepath):
+def readfield(corefilepath,tracerfilepath,geopath):
     tmpdata = nc.Dataset(corefilepath,'r')
     u = tmpdata.variables['u'][:]
     v = tmpdata.variables['v'][:]
@@ -122,12 +112,39 @@ def readfield(corefilepath,tracerfilepath):
     rain_nc = tmpdata.variables['rain_nc'][:]
     sgs_tke = tmpdata.variables['sgs_tke'][:]
     tmpdata.close()
-    ix=100
-    iy=100
+
+    lon, lat, lont, latt = read_var(geopath)
+
     sta_name='bwi'
+    stalon=283.31
+    stalat=39.18
+    ixloc,iyloc=find_loc(lon,lat,stalon,stalat)
+    ix=ixloc[0]
+    iy=iyloc[0]
     writeprofl(sta_name,ix,iy,\
                u,v,W,T,DZ,delp,\
                sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke)
+
+    sta_name='iad'
+    stalon=282.55
+    stalat=38.95
+    ixloc,iyloc=find_loc(lon,lat,stalon,stalat)
+    ix=ixloc[0]
+    iy=iyloc[0]
+    writeprofl(sta_name,ix,iy,\
+               u,v,W,T,DZ,delp,\
+               sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke)
+
+    sta_name='dca'
+    stalon=292.96
+    stalat=38.85
+    ixloc,iyloc=find_loc(lon,lat,stalon,stalat)
+    ix=ixloc[0]
+    iy=iyloc[0]
+    writeprofl(sta_name,ix,iy,\
+               u,v,W,T,DZ,delp,\
+               sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke)
+
 
 def writeprofl(sta_name,ix,iy,u,v,W,T,DZ,delp,sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke):
     uprof=pd.Series(u[0,:,ix,iy])
@@ -176,4 +193,4 @@ if __name__ == "__main__":
     MyArgs = ap.parse_args()
 #   gen_figure(MyArgs.geoin)
 #   gen_location(MyArgs.geoin)
-    readfield(MyArgs.core,MyArgs.tracer)
+    readfield(MyArgs.core,MyArgs.tracer,MyArgs.geoin)
