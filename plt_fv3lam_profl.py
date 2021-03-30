@@ -92,6 +92,7 @@ def gen_figure(geopath):
     plot_world_map(lon, lat, lont, latt, plotpath)
   
 def readfield(corefilepath,tracerfilepath,geopath):
+
     tmpdata = nc.Dataset(corefilepath,'r')
     u = tmpdata.variables['u'][:]
     v = tmpdata.variables['v'][:]
@@ -121,7 +122,7 @@ def readfield(corefilepath,tracerfilepath,geopath):
     ixloc,iyloc=find_loc(lon,lat,stalon,stalat)
     ix=ixloc[0]
     iy=iyloc[0]
-    writeprofl(sta_name,ix,iy,\
+    writeprofl(corefilepath,sta_name,ix,iy,\
                u,v,W,T,DZ,delp,\
                sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke)
 
@@ -131,7 +132,7 @@ def readfield(corefilepath,tracerfilepath,geopath):
     ixloc,iyloc=find_loc(lon,lat,stalon,stalat)
     ix=ixloc[0]
     iy=iyloc[0]
-    writeprofl(sta_name,ix,iy,\
+    writeprofl(corefilepath,sta_name,ix,iy,\
                u,v,W,T,DZ,delp,\
                sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke)
 
@@ -141,12 +142,12 @@ def readfield(corefilepath,tracerfilepath,geopath):
     ixloc,iyloc=find_loc(lon,lat,stalon,stalat)
     ix=ixloc[0]
     iy=iyloc[0]
-    writeprofl(sta_name,ix,iy,\
+    writeprofl(corefilepath,sta_name,ix,iy,\
                u,v,W,T,DZ,delp,\
                sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke)
 
 
-def writeprofl(sta_name,ix,iy,u,v,W,T,DZ,delp,sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke):
+def writeprofl(corefilepath,sta_name,ix,iy,u,v,W,T,DZ,delp,sphum,liq_wat,ice_wat,rainwat,snowwat,graupel,ice_nc,rain_nc,sgs_tke):
     uprof=pd.Series(u[0,:,ix,iy])
     vprof=pd.Series(v[0,:,ix,iy])
     Wprof=pd.Series(W[0,:,ix,iy])
@@ -184,6 +185,88 @@ def writeprofl(sta_name,ix,iy,u,v,W,T,DZ,delp,sphum,liq_wat,ice_wat,rainwat,snow
     )
 
     df.to_csv(sta_name + '.csv')
+#   print(df.columns[1])
+
+    plt_profl(corefilepath,df,sta_name)
+
+def plt_profl(corefilepath,df,sta_name):
+
+    fileinfo=corefilepath.split('/')
+    anafile=fileinfo[-2]
+    cyc=fileinfo[-3]
+    idate=fileinfo[-4]
+
+#   print(df)
+    y=np.linspace(0, 59, 60)
+    fig = plt.figure(figsize=(18,9))
+
+    ncol=8
+    ax0 = fig.add_subplot(2, ncol, 1)  #row, column, index
+    ax0.scatter(np.flip(df.u,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[0])
+
+    ax1 = fig.add_subplot(2, ncol, 2)
+    ax1.scatter(np.flip(df.v,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[1])
+
+    ax2 = fig.add_subplot(2, ncol, 3)
+    ax2.scatter(np.flip(df.W,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[2])
+
+    ax3 = fig.add_subplot(2, ncol, 4)
+    ax3.scatter(np.flip(df['T'],0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[3])
+
+    ax4 = fig.add_subplot(2, ncol, 5)
+    ax4.scatter(np.flip(df['DZ'],0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[4])
+
+    ax5 = fig.add_subplot(2, ncol, 6)
+    ax5.scatter(np.flip(df['delp'],0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[5])
+
+    ax6 = fig.add_subplot(2, ncol, 7)
+    ax6.scatter(np.flip(df['sphum']*1000,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[6])
+
+    ax7 = fig.add_subplot(2, ncol, 8)
+    ax7.scatter(np.flip(df['liq_wat']*1000.0,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[7])
+
+    ax8 = fig.add_subplot(2, ncol, 9)
+    ax8.scatter(np.flip(df['ice_wat']*1000.0,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[8])
+
+    ax9 = fig.add_subplot(2, ncol, 10)
+    ax9.scatter(np.flip(df['rainwat']*1000.0,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[9])
+
+    ax10 = fig.add_subplot(2, ncol, 11)
+    ax10.scatter(np.flip(df['snowwat']*1000.0,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[10])
+
+    ax11 = fig.add_subplot(2, ncol, 12)
+    ax11.scatter(np.flip(df['graupel']*1000.0,0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[11])
+
+    ax12 = fig.add_subplot(2, ncol, 13)
+    ax12.scatter(np.flip(df['ice_nc'],0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[12])
+
+    ax13 = fig.add_subplot(2, ncol, 14)
+    ax13.scatter(np.flip(df['rain_nc'],0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[13])
+
+    ax14 = fig.add_subplot(2, ncol, 15)
+    ax14.scatter(np.flip(df['sgs_tke'],0),y,s=10,marker="o",c='b')
+    plt.title(df.columns[14])
+
+    output_infor=sta_name + '_' + idate + "_cyc" + cyc + '_' + anafile
+    fig.text(0.5, 0.04, output_infor, ha='center')
+    plt.savefig(sta_name+'_profl.png',bbox_inches='tight',dpi=100)
+
+    print(df.columns[0])
+
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
