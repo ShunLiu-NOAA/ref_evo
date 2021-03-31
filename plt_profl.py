@@ -185,8 +185,9 @@ def writeprofl(sta_name,ix,iy,u,v,W,T,DZ,delp,sphum,liq_wat,ice_wat,rainwat,snow
 
     df.to_csv(sta_name + '.csv')
 
-def plt_profl(inputfile):
+def plt_profl(inputfile,inputgus):
     df=pd.read_csv(inputfile)
+    df1=pd.read_csv(inputgus)
     y=np.linspace(0, 59, 60)
     fig = plt.figure(figsize=(18,10))
 
@@ -197,58 +198,82 @@ def plt_profl(inputfile):
 #      ax.scatter(np.flip(df[key],0),y,s=30,marker="o",c='b')
   
 
-    ncol=6
+    ncol=8
     ax0 = fig.add_subplot(2, ncol, 1)  #row, column, index
-    ax0.scatter(np.flip(df.u,0),y,s=20,marker="o",c='b')
+    ax0.scatter(np.flip(df.u,0),y,s=10,marker="o",c='b')
+    ax0.scatter(np.flip(df1.u,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[1])
 
     ax1 = fig.add_subplot(2, ncol, 2)
-    ax1.scatter(np.flip(df.v,0),y,s=20,marker="o",c='b')
+    ax1.scatter(np.flip(df.v,0),y,s=10,marker="o",c='b')
+    ax1.scatter(np.flip(df1.v,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[2])
 
     ax2 = fig.add_subplot(2, ncol, 3)
-    ax2.scatter(np.flip(df.W,0),y,s=20,marker="o",c='b')
+    ax2.scatter(np.flip(df.W,0),y,s=10,marker="o",c='b')
+    ax2.scatter(np.flip(df1.W,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[3])
 
     ax3 = fig.add_subplot(2, ncol, 4)
-    ax3.scatter(np.flip(df['T'],0),y,s=20,marker="o",c='b')
+    ax3.scatter(np.flip(df['T'],0),y,s=10,marker="o",c='b')
+    ax3.scatter(np.flip(df1['T'],0),y,s=10,marker="o",c='r')
     plt.title(df.columns[4])
 
     ax4 = fig.add_subplot(2, ncol, 5)
-    ax4.scatter(np.flip(df['DZ'],0),y,s=20,marker="o",c='b')
+    ax4.scatter(np.flip(df['DZ'],0),y,s=10,marker="o",c='b')
+    ax4.scatter(np.flip(df1['DZ'],0),y,s=10,marker="o",c='r')
     plt.title(df.columns[5])
 
     ax5 = fig.add_subplot(2, ncol, 6)
-    ax5.scatter(np.flip(df['delp'],0),y,s=20,marker="o",c='b')
+    ax5.scatter(np.flip(df['delp'],0),y,s=10,marker="o",c='b')
+    ax5.scatter(np.flip(df1['delp'],0),y,s=10,marker="o",c='r')
     plt.title(df.columns[6])
 
     ax6 = fig.add_subplot(2, ncol, 7)
-    ax6.scatter(np.flip(df['sphum']*1000,0),y,s=20,marker="o",c='b')
+    ax6.scatter(np.flip(df['sphum']*1000,0),y,s=10,marker="o",c='b')
+    ax6.scatter(np.flip(df1['sphum']*1000,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[7])
 
     ax7 = fig.add_subplot(2, ncol, 8)
-    ax7.scatter(np.flip(df['liq_wat']*10.0,0),y,s=20,marker="o",c='b')
+    ax7.scatter(np.flip(df['liq_wat']*1000.0,0),y,s=10,marker="o",c='b')
+    ax7.scatter(np.flip(df1['liq_wat']*1000.0,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[8])
 
     ax8 = fig.add_subplot(2, ncol, 9)
-    ax8.scatter(np.flip(df['ice_wat']*10.0,0),y,s=20,marker="o",c='b')
+    ax8.scatter(np.flip(df['ice_wat']*1000.0,0),y,s=10,marker="o",c='b')
+    ax8.scatter(np.flip(df1['ice_wat']*1000.0,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[9])
 
     ax9 = fig.add_subplot(2, ncol, 10)
-    ax9.scatter(np.flip(df['rainwat']*10.0,0),y,s=20,marker="o",c='b')
+    ax9.scatter(np.flip(df['rainwat']*1000.0,0),y,s=10,marker="o",c='b')
+    ax9.scatter(np.flip(df1['rainwat']*1000.0,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[10])
 
     ax10 = fig.add_subplot(2, ncol, 11)
-    ax10.scatter(np.flip(df['snowwat']*10.0,0),y,s=20,marker="o",c='b')
+    ax10.scatter(np.flip(df['snowwat']*1000.0,0),y,s=10,marker="o",c='b')
+    ax10.scatter(np.flip(df1['snowwat']*1000.0,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[11])
 
     ax11 = fig.add_subplot(2, ncol, 12)
-    ax11.scatter(np.flip(df['sgs_tke'],0),y,s=20,marker="o",c='b')
+    ax11.scatter(np.flip(df['graupel']*1000.0,0),y,s=10,marker="o",c='b')
+    ax11.scatter(np.flip(df1['graupel']*1000.0,0),y,s=10,marker="o",c='r')
     plt.title(df.columns[12])
 
-#   ax8 = fig.add_subplot(2, ncol, 3)
-#   ax8.scatter(np.flip(df['ice_wat'],0),y,s=30,marker="o",c='b')
-#   plt.title(df.columns[8])
+    ax12 = fig.add_subplot(2, ncol, 13)
+    ax12.scatter(np.flip(df['ice_nc']*1.0,0),y,s=10,marker="o",c='b')
+    ax12.scatter(np.flip(df1['ice_nc']*1.0,0),y,s=10,marker="o",c='r')
+    plt.title(df.columns[13])
+
+    ax13 = fig.add_subplot(2, ncol, 14)
+    ax13.scatter(np.flip(df['rain_nc'],0),y,s=10,marker="o",c='b')
+    ax13.scatter(np.flip(df1['rain_nc'],0),y,s=10,marker="o",c='r')
+    plt.title(df.columns[14])
+
+    ax14 = fig.add_subplot(2, ncol, 15)
+    ax14.scatter(np.flip(df['sgs_tke'],0),y,s=10,marker="o",c='b')
+    ax14.scatter(np.flip(df1['sgs_tke'],0),y,s=10,marker="o",c='r')
+    ax14.legend()
+    plt.title(df.columns[15])
 
 #   for key in df.keys():
 #      print(key)
@@ -258,13 +283,12 @@ def plt_profl(inputfile):
 #   ax1.scatter(np.flip(df[key],0),y,s=30,marker="o",c='b')
 #   plt.title(df.columns[4])
 
-
-
     plt.savefig('profl.png',bbox_inches='tight',dpi=100)
     print(df.columns[1])
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument('-i', '--inputfile', help="path to prefix of input files", required=True)
+    ap.add_argument('-igus', '--inputgus', help="path to prefix of input files", required=True)
     MyArgs = ap.parse_args()
-    plt_profl(MyArgs.inputfile)
+    plt_profl(MyArgs.inputfile,MyArgs.inputgus)
