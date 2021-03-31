@@ -1,0 +1,22 @@
+============================
+work on the tm06-tm00:
+cron_fv3lam_profl.sh
+plt_fv3lam_profl.py
+plt_fv3lam_profl.sh
+test.sh
+sub.sh
+
+============================
+work on tm06
+test_tm06.sh
+plt_fv3lam_tm06_profl.py
+
+
+============================
+plot figures only from csv file
+plt_profl.py
+plt_profl.sh
+
+============================
+to delete
+plt_gfs_profl.sh
