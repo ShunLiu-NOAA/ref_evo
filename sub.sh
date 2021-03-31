@@ -25,7 +25,7 @@ echo `date`
 source ~/bin/loadp.sh
 
 execdir=/gpfs/dell2/emc/modeling/save/Shun.Liu/code/ref_evo
-thisdate=`$NDATE |cut -c1-8`
+thisdate=`$NDATE -72 |cut -c1-8`
 rundir=/gpfs/dell2/emc/modeling/noscrub/Shun.Liu/test/ref_evo/$thisdate
 mkdir -p $rundir
 cd $rundir
