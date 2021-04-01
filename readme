@@ -18,5 +18,6 @@ plt_profl.py
 plt_profl.sh
 
 ============================
-to delete
+plot bwi vertical profile from GFS restart file
 plt_gfs_profl.sh
+plt_gfs_profl.py
