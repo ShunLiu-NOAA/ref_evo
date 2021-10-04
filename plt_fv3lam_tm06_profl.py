@@ -214,7 +214,7 @@ def plt_profl(corefilepath,df,sta_name):
     idate=fileinfo[-4]
 
 #   print(df)
-    y=np.linspace(0, 60, 61)
+    y=np.linspace(0, 65, 66)
     fig = plt.figure(figsize=(18,9))
 
     ncol=8
